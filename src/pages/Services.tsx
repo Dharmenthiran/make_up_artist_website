@@ -246,14 +246,18 @@ const Services = () => {
             Ready to Book Your Session?
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Let's create magic together. Contact us to discuss your requirements 
+            Let's create magic together. Message me to discuss your requirements 
             and book your personalized makeup session.
           </p>
-          <Link to="/contact">
+          <a 
+            href="https://instagram.com/direct/t/sharmi_artbynila" 
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
             <Button size="lg" className="shadow-glow animate-glow-pulse">
-              Book Now
+              Message Me
             </Button>
-          </Link>
+          </a>
         </motion.div>
       </div>
     </main>

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Instagram, Phone, Mail } from "lucide-react";
 import { motion } from "framer-motion";
+import logo from "@/assets/logo.jpg";
 
 const Footer = () => {
   const navLinks = [
@@ -21,9 +22,12 @@ const Footer = () => {
             viewport={{ once: true }}
             className="space-y-4"
           >
-            <h3 className="text-2xl font-serif font-bold gradient-text">
-              Art by Nila
-            </h3>
+            <div className="flex items-center space-x-3">
+              <img src={logo} alt="SHARMI MAKEOVERS" className="h-12 w-12 object-contain rounded-full" />
+              <h3 className="text-2xl font-serif font-bold gradient-text">
+                SHARMI MAKEOVERS
+              </h3>
+            </div>
             <p className="text-muted-foreground text-sm">
               Enhancing Your Beauty, Defining Your Moment
             </p>
@@ -103,7 +107,7 @@ const Footer = () => {
         >
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-sm text-muted-foreground">
-              © 2025 Art by Nila. All rights reserved.
+              © 2025 SHARMI MAKEOVERS. All rights reserved.
             </p>
             <div className="h-px w-32 bg-gradient-primary" />
           </div>

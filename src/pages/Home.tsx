@@ -55,12 +55,16 @@ const Home = () => {
               </p>
 
               <div className="flex flex-wrap gap-4">
-                <Link to="/contact">
+                <a 
+                  href="https://instagram.com/direct/t/sharmi_artbynila" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
                   <Button size="lg" className="group shadow-glow animate-glow-pulse">
-                    Book Now
+                    Message Me
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
-                </Link>
+                </a>
                 <Link to="/services">
                   <Button size="lg" variant="outline" className="glass">
                     View Services
@@ -74,9 +78,10 @@ const Home = () => {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.3 }}
-              className="h-[400px] md:h-[600px] rounded-3xl overflow-hidden glass shadow-glass"
+              className="h-[400px] md:h-[600px] rounded-3xl overflow-hidden"
             >
-              <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
+              <Canvas camera={{ position: [0, 0, 5], fov: 50 }} gl={{ alpha: true }}>
+                <color attach="background" args={['transparent']} />
                 <ambientLight intensity={0.5} />
                 <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} />
                 <pointLight position={[-10, -10, -10]} intensity={0.5} />

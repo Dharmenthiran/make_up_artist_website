@@ -4,6 +4,7 @@ import { Moon, Sun, Menu, X } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
 import { Button } from "./ui/button";
 import { useState } from "react";
+import logo from "@/assets/logo.jpg";
 
 const Navigation = () => {
   const { theme, setTheme } = useTheme();
@@ -28,12 +29,18 @@ const Navigation = () => {
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
-          <Link to="/" className="flex items-center space-x-2">
+          <Link to="/" className="flex items-center space-x-3">
+            <motion.img
+              src={logo}
+              alt="SHARMI MAKEOVERS Logo"
+              whileHover={{ scale: 1.05 }}
+              className="h-12 w-12 object-contain rounded-full"
+            />
             <motion.h1
               whileHover={{ scale: 1.05 }}
-              className="text-2xl font-serif font-bold gradient-text"
+              className="text-xl md:text-2xl font-serif font-bold gradient-text"
             >
-              Art by Nila
+              SHARMI MAKEOVERS
             </motion.h1>
           </Link>
 

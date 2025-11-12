@@ -56,7 +56,7 @@ const About = () => {
                   >
                     💄
                   </motion.div>
-                  <p className="text-2xl font-serif font-semibold">Art by Nila</p>
+                  <p className="text-2xl font-serif font-semibold">SHARMI MAKEOVERS</p>
                 </div>
               </div>
             </div>
