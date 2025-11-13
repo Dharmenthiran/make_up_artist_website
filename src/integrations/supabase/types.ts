@@ -18,7 +18,6 @@ export type Database = {
         Row: {
           created_at: string | null
           description: string | null
-          header: Database["public"]["Enums"]["service_type"]
           id: string
           image_url: string
           updated_at: string | null
@@ -26,7 +25,6 @@ export type Database = {
         Insert: {
           created_at?: string | null
           description?: string | null
-          header: Database["public"]["Enums"]["service_type"]
           id?: string
           image_url: string
           updated_at?: string | null
@@ -34,7 +32,6 @@ export type Database = {
         Update: {
           created_at?: string | null
           description?: string | null
-          header?: Database["public"]["Enums"]["service_type"]
           id?: string
           image_url?: string
           updated_at?: string | null
