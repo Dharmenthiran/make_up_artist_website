@@ -54,14 +54,14 @@ const Home = () => {
                 From weddings to celebrations, let your natural beauty shine.
               </p>
 
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a 
-                  href="https://instagram.com/direct/t/sharmi_artbynila" 
+                  href="https://wa.me/916382489272" 
                   target="_blank" 
                   rel="noopener noreferrer"
                 >
                   <Button size="lg" className="group shadow-glow animate-glow-pulse">
-                    Message Me
+                    WhatsApp Me
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </a>

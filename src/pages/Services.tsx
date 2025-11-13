@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Sparkles, Check } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import ParticlesBackground from "@/components/ParticlesBackground";
@@ -117,6 +117,12 @@ const services = [
 ];
 
 const Services = () => {
+  const navigate = useNavigate();
+
+  const handleServiceClick = (serviceName: string) => {
+    navigate(`/gallery?service=${encodeURIComponent(serviceName)}`);
+  };
+
   return (
     <main className="relative min-h-screen pt-20">
       <ParticlesBackground />
@@ -161,6 +167,7 @@ const Services = () => {
                 scale: 1.02, 
                 y: -5,
               }}
+              onClick={() => handleServiceClick(service.title)}
               className="group cursor-pointer"
             >
               <Card className="h-full glass border-border/50 hover:shadow-glow transition-all overflow-hidden">
@@ -250,12 +257,12 @@ const Services = () => {
             and book your personalized makeup session.
           </p>
           <a 
-            href="https://instagram.com/direct/t/sharmi_artbynila" 
+            href="https://wa.me/916382489272" 
             target="_blank" 
             rel="noopener noreferrer"
           >
             <Button size="lg" className="shadow-glow animate-glow-pulse">
-              Message Me
+              WhatsApp Me
             </Button>
           </a>
         </motion.div>
