@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Environment } from "@react-three/drei";
 import { Sparkles, Heart, Award, Users } from "lucide-react";
 import ParticlesBackground from "@/components/ParticlesBackground";
+import MakeupBrush3D from "@/components/MakeupBrush3D";
 
 const About = () => {
   const stats = [
@@ -38,28 +41,23 @@ const About = () => {
 
         {/* About Content */}
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-20">
-          {/* Image/Placeholder */}
+          {/* 3D Model */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="relative"
+            className="relative h-[500px] rounded-3xl overflow-hidden"
           >
-            <div className="aspect-[3/4] rounded-3xl glass overflow-hidden shadow-glass">
-              <div className="absolute inset-0 bg-gradient-to-br from-rose-gold-light via-primary to-gold opacity-70 flex items-center justify-center">
-                <div className="text-center text-white">
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                    className="text-8xl mb-4"
-                  >
-                    💄
-                  </motion.div>
-                  <p className="text-2xl font-serif font-semibold">SHARMI MAKEOVERS</p>
-                </div>
-              </div>
-            </div>
+            <Canvas camera={{ position: [0, 0, 5], fov: 50 }} gl={{ alpha: true }}>
+              <color attach="background" args={['transparent']} />
+              <ambientLight intensity={0.5} />
+              <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} />
+              <pointLight position={[-10, -10, -10]} intensity={0.5} />
+              <MakeupBrush3D />
+              <Environment preset="sunset" />
+              <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={2} />
+            </Canvas>
             <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-accent/30 rounded-full blur-2xl" />
             <div className="absolute -top-6 -left-6 w-32 h-32 bg-primary/30 rounded-full blur-2xl" />
           </motion.div>

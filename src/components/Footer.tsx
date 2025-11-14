@@ -38,13 +38,25 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:text-primary/80 transition-colors"
+                aria-label="Instagram"
               >
                 <Instagram className="h-5 w-5" />
               </motion.a>
               <motion.a
                 whileHover={{ scale: 1.1, rotate: 5 }}
+                href="https://wa.me/916382489272"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:text-primary/80 transition-colors"
+                aria-label="WhatsApp"
+              >
+                <MessageCircle className="h-5 w-5" />
+              </motion.a>
+              <motion.a
+                whileHover={{ scale: 1.1, rotate: 5 }}
                 href="tel:+916382489272"
                 className="text-primary hover:text-primary/80 transition-colors"
+                aria-label="Phone"
               >
                 <Phone className="h-5 w-5" />
               </motion.a>
@@ -52,6 +64,7 @@ const Footer = () => {
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 href="mailto:sharmila2905.2005@gmail.com"
                 className="text-primary hover:text-primary/80 transition-colors"
+                aria-label="Email"
               >
                 <Mail className="h-5 w-5" />
               </motion.a>
@@ -107,7 +120,7 @@ const Footer = () => {
         >
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-sm text-muted-foreground">
-              © 2025 SHARMI MAKEOVERS. All rights reserved.
+              © 2025 Art by Nila. All Rights Reserved.
             </p>
             <div className="h-px w-32 bg-gradient-primary" />
           </div>
