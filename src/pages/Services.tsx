@@ -78,7 +78,7 @@ const services = [
   {
     title: "Saree Draping",
     emoji: "👗",
-    price: "Custom Pricing",
+    price: "₹500",
     description: "Perfect traditional saree draping with neat pleats.",
     animation: "fade",
     color: "from-gold to-primary",
@@ -91,7 +91,7 @@ const services = [
   {
     title: "Saree Pre-Pleating",
     emoji: "🪡",
-    price: "Custom Pricing",
+    price: "₹300",
     description: "Custom pre-pleated saree style for easy wear.",
     animation: "zoom",
     color: "from-secondary to-primary",
@@ -104,7 +104,7 @@ const services = [
   {
     title: "Hairstyle",
     emoji: "💇",
-    price: "Custom Pricing",
+    price: "₹3,000",
     description: "Professional hair styling — buns, curls, braids & wedding looks.",
     animation: "slide",
     color: "from-rose-gold to-accent",
