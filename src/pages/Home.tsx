@@ -79,9 +79,13 @@ const Home = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.3 }}
               className="h-[400px] md:h-[600px] rounded-3xl overflow-hidden"
+              style={{ background: 'transparent' }}
             >
-              <Canvas camera={{ position: [0, 0, 5], fov: 50 }} gl={{ alpha: true }}>
-                <color attach="background" args={['transparent']} />
+              <Canvas 
+                camera={{ position: [0, 0, 5], fov: 50 }} 
+                gl={{ alpha: true, antialias: true, premultipliedAlpha: false }}
+                style={{ background: 'transparent' }}
+              >
                 <ambientLight intensity={0.5} />
                 <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} />
                 <pointLight position={[-10, -10, -10]} intensity={0.5} />
