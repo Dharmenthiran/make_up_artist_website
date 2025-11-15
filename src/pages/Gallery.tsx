@@ -1,9 +1,18 @@
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import { Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import ParticlesBackground from "@/components/ParticlesBackground";
+import ImageLightbox from "@/components/ImageLightbox";
+import { Button } from "@/components/ui/button";
+
+type GalleryImage = {
+  id: string;
+  gallery_item_id: string;
+  image_url: string;
+  display_order: number;
+};
 
 type GalleryItem = {
   id: string;
@@ -12,6 +21,7 @@ type GalleryItem = {
   description: string | null;
   created_at?: string;
   updated_at?: string;
+  gallery_images?: GalleryImage[];
 };
 
 const Gallery = () => {
@@ -19,6 +29,10 @@ const Gallery = () => {
   const filter = searchParams.get("service");
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxImages, setLightboxImages] = useState<string[]>([]);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [currentImageIndexes, setCurrentImageIndexes] = useState<Record<string, number>>({});
 
   useEffect(() => {
     fetchGalleryItems();
@@ -29,36 +43,68 @@ const Gallery = () => {
     setLoading(true);
     
     try {
-      let data: any = null;
-      let error: any = null;
+      let itemsQuery = supabase
+        .from("gallery_items")
+        .select(`
+          *,
+          gallery_images(*)
+        `)
+        .order("created_at", { ascending: false });
 
       if (filter) {
-        // @ts-ignore - Supabase query builder creates deep type nesting
-        const result = await supabase
-          .from("gallery_items")
-          .select("*")
-          .eq("header", filter)
-          .order("created_at", { ascending: false });
-        data = result.data;
-        error = result.error;
-      } else {
-        // @ts-ignore - Supabase query builder creates deep type nesting
-        const result = await supabase
-          .from("gallery_items")
-          .select("*")
-          .order("created_at", { ascending: false });
-        data = result.data;
-        error = result.error;
+        itemsQuery = itemsQuery.eq("header", filter);
       }
 
+      const { data, error } = await itemsQuery;
+
       if (!error && data) {
-        setGalleryItems(data);
+        // Sort gallery_images by display_order
+        const itemsWithSortedImages = data.map((item: any) => ({
+          ...item,
+          gallery_images: item.gallery_images?.sort(
+            (a: GalleryImage, b: GalleryImage) => a.display_order - b.display_order
+          ) || []
+        }));
+        setGalleryItems(itemsWithSortedImages);
       }
     } catch (error) {
       console.error("Error fetching gallery items:", error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const getAllImages = (item: GalleryItem): string[] => {
+    const images = [item.image_url];
+    if (item.gallery_images && item.gallery_images.length > 0) {
+      images.push(...item.gallery_images.map(img => img.image_url));
+    }
+    return images;
+  };
+
+  const openLightbox = (item: GalleryItem, imageIndex: number) => {
+    const images = getAllImages(item);
+    setLightboxImages(images);
+    setLightboxIndex(imageIndex);
+    setLightboxOpen(true);
+  };
+
+  const handleNextImage = (itemId: string, totalImages: number) => {
+    setCurrentImageIndexes(prev => ({
+      ...prev,
+      [itemId]: ((prev[itemId] || 0) + 1) % totalImages
+    }));
+  };
+
+  const handlePreviousImage = (itemId: string, totalImages: number) => {
+    setCurrentImageIndexes(prev => ({
+      ...prev,
+      [itemId]: ((prev[itemId] || 0) - 1 + totalImages) % totalImages
+    }));
+  };
+
+  const getCurrentImageIndex = (itemId: string) => {
+    return currentImageIndexes[itemId] || 0;
   };
 
   return (
@@ -103,43 +149,85 @@ const Gallery = () => {
         ) : galleryItems.length > 0 ? (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {galleryItems.map((item, index) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.05 }}
-                  className="glass rounded-2xl overflow-hidden shadow-glass hover:shadow-glow transition-all"
-                >
-                  {/* Header */}
-                  <div className="bg-gradient-to-r from-primary to-accent p-4">
-                    <h3 className="text-lg font-semibold text-white text-center">
-                      {item.header}
-                    </h3>
-                  </div>
+              {galleryItems.map((item, index) => {
+                const allImages = getAllImages(item);
+                const currentIndex = getCurrentImageIndex(item.id);
+                const currentImage = allImages[currentIndex];
 
-                  {/* Image */}
-                  <div className="relative aspect-square overflow-hidden">
-                    <motion.img
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.3 }}
-                      src={item.image_url}
-                      alt={item.header}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-
-                  {/* Description */}
-                  {item.description && (
-                    <div className="p-4">
-                      <p className="text-muted-foreground text-sm text-center leading-relaxed">
-                        {item.description}
-                      </p>
+                return (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.05 }}
+                    className="glass rounded-2xl overflow-hidden shadow-glass hover:shadow-glow transition-all"
+                  >
+                    {/* Header */}
+                    <div className="bg-gradient-to-r from-primary to-accent p-4">
+                      <h3 className="text-lg font-semibold text-white text-center">
+                        {item.header}
+                      </h3>
                     </div>
-                  )}
-                </motion.div>
-              ))}
+
+                    {/* Image with Navigation */}
+                    <div className="relative aspect-square overflow-hidden group">
+                      <motion.img
+                        key={currentIndex}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                        src={currentImage}
+                        alt={item.header}
+                        className="w-full h-full object-cover cursor-pointer"
+                        onClick={() => openLightbox(item, currentIndex)}
+                      />
+                      
+                      {/* Navigation Arrows - Show only if multiple images */}
+                      {allImages.length > 1 && (
+                        <>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white hover:bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handlePreviousImage(item.id, allImages.length);
+                            }}
+                          >
+                            <ChevronLeft className="w-5 h-5" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white hover:bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleNextImage(item.id, allImages.length);
+                            }}
+                          >
+                            <ChevronRight className="w-5 h-5" />
+                          </Button>
+                          
+                          {/* Image Counter */}
+                          <div className="absolute bottom-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded">
+                            {currentIndex + 1} / {allImages.length}
+                          </div>
+                        </>
+                      )}
+                    </div>
+
+                    {/* Description */}
+                    {item.description && (
+                      <div className="p-4">
+                        <p className="text-muted-foreground text-sm text-center leading-relaxed">
+                          {item.description}
+                        </p>
+                      </div>
+                    )}
+                  </motion.div>
+                );
+              })}
             </div>
 
             {/* WhatsApp CTA */}
@@ -202,6 +290,14 @@ const Gallery = () => {
           </p>
         </motion.div>
       </div>
+
+      {/* Image Lightbox */}
+      <ImageLightbox
+        images={lightboxImages}
+        initialIndex={lightboxIndex}
+        isOpen={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+      />
     </main>
   );
 };
