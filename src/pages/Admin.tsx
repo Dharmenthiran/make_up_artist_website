@@ -19,6 +19,7 @@ const serviceHeaders = [
   "Saree Draping",
   "Saree Pre-Pleating",
   "Hairstyle",
+  "Certificates",
 ];
 
 type GalleryItem = {
