@@ -21,7 +21,7 @@ const AdminLogin = () => {
 
     try {
       if (isSignup) {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -31,7 +31,19 @@ const AdminLogin = () => {
 
         if (error) throw error;
         
-        toast.success("Account created! Please sign in.");
+        // Auto-grant admin role to first user
+        if (data.user) {
+          const { data: wasAssigned } = await supabase.rpc('bootstrap_first_admin', {
+            _user_id: data.user.id
+          });
+
+          if (wasAssigned) {
+            toast.success("Admin account created! You can now log in.");
+          } else {
+            toast.success("Account created! Contact the admin to grant access.");
+          }
+        }
+        
         setIsSignup(false);
       } else {
         const { error } = await supabase.auth.signInWithPassword({
@@ -54,7 +66,7 @@ const AdminLogin = () => {
 
           if (!roleData) {
             await supabase.auth.signOut();
-            toast.error("Access denied. Admin only.");
+            toast.error("Access denied. Only admin accounts can access this page. If you just signed up, the first account becomes admin automatically.");
             return;
           }
 
