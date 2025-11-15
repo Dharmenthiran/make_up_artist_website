@@ -70,6 +70,11 @@ const Home = () => {
                     View Services
                   </Button>
                 </Link>
+                <Link to="/gallery?filter=Certificates">
+                  <Button size="lg" variant="outline" className="glass">
+                    View Certificates
+                  </Button>
+                </Link>
               </div>
             </motion.div>
 
