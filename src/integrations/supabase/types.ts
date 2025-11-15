@@ -14,6 +14,38 @@ export type Database = {
   }
   public: {
     Tables: {
+      gallery_images: {
+        Row: {
+          created_at: string | null
+          display_order: number
+          gallery_item_id: string
+          id: string
+          image_url: string
+        }
+        Insert: {
+          created_at?: string | null
+          display_order?: number
+          gallery_item_id: string
+          id?: string
+          image_url: string
+        }
+        Update: {
+          created_at?: string | null
+          display_order?: number
+          gallery_item_id?: string
+          id?: string
+          image_url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gallery_images_gallery_item_id_fkey"
+            columns: ["gallery_item_id"]
+            isOneToOne: false
+            referencedRelation: "gallery_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       gallery_items: {
         Row: {
           created_at: string | null
