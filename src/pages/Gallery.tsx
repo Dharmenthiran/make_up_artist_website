@@ -26,7 +26,7 @@ type GalleryItem = {
 
 const Gallery = () => {
   const [searchParams] = useSearchParams();
-  const filter = searchParams.get("service");
+  const filter = searchParams.get("filter");
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [lightboxOpen, setLightboxOpen] = useState(false);
